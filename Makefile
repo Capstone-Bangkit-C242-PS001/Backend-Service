@@ -1,3 +1,8 @@
+ifneq (,$(wildcard .env))
+    include .env
+    export
+endif
+
 start:
 	docker-compose up -d
 
@@ -8,3 +13,34 @@ stop:
 	docker-compose down 
 
 restart: stop start
+
+create-migration: 
+ifeq ($(OS),Windows_NT)
+	@if "$(name)" == "" ( \
+		echo "Error: name parameter is required. Usage: make create-migration name=<migration_name>";\
+		exit 1; \
+	) else ( \
+		migrate create -ext sql -dir database/migration -seq $(name) \
+	)
+else
+	@if [ -z "$(name)" ]; then \
+		echo "Error: name parameter is required. Usage: make create-migration name=<migration_name>"; \
+		exit 1; \
+	fi; \
+	migrate create -ext sql -dir database/migration -seq $(name)
+endif
+
+debug-env:
+	@echo "DB_USER: '$(DB_USER)'"
+	@echo "DB_PASSWORD: '$(DB_PASSWORD)'"
+	@echo "DB_HOST: '$(DB_HOST)'"
+	@echo "DB_PORT: '$(DB_PORT)'"
+	@echo "DB_NAME: '$(DB_NAME)'"
+
+migration-up:
+	@echo "Running migrations up..."
+	migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" up
+
+migration-down:
+	@echo "Running migrations down..."
+	migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" down 1
