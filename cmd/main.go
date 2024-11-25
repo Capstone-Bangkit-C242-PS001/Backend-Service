@@ -5,6 +5,7 @@ import (
 
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/config"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/database"
+	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/routes"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,6 +21,8 @@ func main() {
 			"message": "pong pong pong",
 		})
 	})
+
+	routes.AuthRouter(api)
 
 	server.Run(fmt.Sprintf(":%v", cfg.APP_PORT))
 }
