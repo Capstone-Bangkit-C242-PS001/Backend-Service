@@ -22,7 +22,7 @@ WORKDIR /root/
 
 COPY --from=builder /app/cmd/main .
 
-# COPY --from=builder /app/.env .
+COPY --from=builder /app/.env .
 
 EXPOSE 9000
 

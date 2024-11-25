@@ -7,5 +7,4 @@ start-build:
 stop:
 	docker-compose down 
 
-restart:
-	stop start
+restart: stop start
