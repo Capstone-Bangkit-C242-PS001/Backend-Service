@@ -10,6 +10,7 @@ import (
 
 type AuthService interface {
 	Register(req *auth.RegisterRequest) error
+	Login(req *auth.LoginRequest) (*auth.LoginResponse, error)
 }
 
 type authService struct {
@@ -48,4 +49,27 @@ func (as *authService) Register(req *auth.RegisterRequest) error {
 	}
 
 	return nil
+}
+
+func (as *authService) Login(req *auth.LoginRequest) (*auth.LoginResponse, error) {
+	user, err := as.repository.FindByEmail(req.Email)
+
+	if err != nil {
+		return nil, &errorhandler.NotFoundError{Message: "Invalid email or password"}
+	}
+
+	if !utils.VerifyPassword(user.Password, req.Password) {
+		return nil, &errorhandler.NotFoundError{Message: "Invalid email or password"}
+	}
+
+	token, err := utils.GenerateToken(user)
+	if err != nil {
+		return nil, &errorhandler.InternalServerError{Message: err.Error()}
+	}
+
+	return &auth.LoginResponse{
+		ID:    user.ID,
+		Name:  user.Name,
+		Token: token,
+	}, nil
 }

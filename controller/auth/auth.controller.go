@@ -36,3 +36,26 @@ func (ac *authController) Register(c *gin.Context) {
 		Message:    "User registered successfully",
 	}))
 }
+
+func (ac *authController) Login(c *gin.Context) {
+	var loginRequest dto.LoginRequest
+
+	if err := c.ShouldBindJSON(&loginRequest); err != nil {
+		errorhandler.HandleError(c, &errorhandler.BadRequestError{Message: err.Error()})
+		return
+	}
+
+	resp, err := ac.service.Login(&loginRequest)
+	if err != nil {
+		errorhandler.HandleError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, response.Response(
+		response.ResponseParam{
+			StatusCode: http.StatusOK,
+			Message:    "User Login Successfully",
+			Data:       resp,
+		},
+	))
+}
