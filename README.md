@@ -3,4 +3,3 @@
 
 If you want to use local db, set `APP_ENV` to `development`
 
-### How to run
