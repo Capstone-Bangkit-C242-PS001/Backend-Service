@@ -19,8 +19,13 @@ func LoadDB() {
 		dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DB_USER, cfg.DB_PASSWORD, cfg.DB_HOST, cfg.DB_PORT, cfg.DB_NAME)
 	} else {
 		SOCKET_DIR := "/cloudsql"
-		dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-			cfg.DB_USER, cfg.DB_PASSWORD, SOCKET_DIR, cfg.DB_HOST, cfg.DB_NAME)
+		dsn = fmt.Sprintf("%s:%s@unix(%s/%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			cfg.DB_USER,     // Database username
+			cfg.DB_PASSWORD, // Database password
+			SOCKET_DIR,      // Correct Cloud SQL Unix socket directory
+			cfg.DB_HOST,     // Cloud SQL instance connection name
+			cfg.DB_NAME,     // Database name
+		)
 	}
 
 	log.Println(dsn)
