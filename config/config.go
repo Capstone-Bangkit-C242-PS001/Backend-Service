@@ -56,6 +56,11 @@ func GetConfig() *Config {
 			APP_ENV:     viper.GetString("APP_ENV"),
 			DB_PORT:     viper.GetString("DB_PORT"),
 		}
+
+		// Set default port if not provided
+		if appConfig.APP_PORT == "" {
+			appConfig.APP_PORT = "9000"
+		}
 	})
 
 	return appConfig
