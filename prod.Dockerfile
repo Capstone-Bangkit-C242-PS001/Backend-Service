@@ -8,6 +8,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+COPY database/migration /app/database/migration
 
 WORKDIR /app/cmd
 
@@ -21,6 +22,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root/
 
 COPY --from=builder /app/cmd/main .
+COPY --from=builder /app/database/migration ./database/migration
 
 EXPOSE 9000
 
