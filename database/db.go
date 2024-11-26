@@ -53,7 +53,7 @@ func runMigrations(dsn string) {
 	migrationDSN := fmt.Sprintf("mysql://%s", dsn)
 
 	// Path to migration files
-	migrationPath := "file://database/migration"
+	migrationPath := "file://./database/migration"
 
 	m, err := migrate.New(migrationPath, migrationDSN)
 	if err != nil {
