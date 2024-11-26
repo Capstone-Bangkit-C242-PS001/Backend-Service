@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"sync"
 
 	"github.com/spf13/viper"
@@ -24,16 +25,36 @@ var (
 
 func GetConfig() *Config {
 	once.Do(func() {
-		viper.AddConfigPath(".")
-		viper.SetConfigName(".env")
-		viper.SetConfigType("env")
+		viper.AutomaticEnv() // Prioritize environment variables
 
-		if err := viper.ReadInConfig(); err != nil {
-			log.Fatalf("No .env file found: %v", err)
+		// Optional: Load .env file for local development
+		if _, err := os.Stat(".env"); err == nil {
+			viper.SetConfigFile(".env")
+			viper.SetConfigType("env")
+
+			if err := viper.ReadInConfig(); err != nil {
+				log.Printf("Error reading .env file: %v", err)
+			}
 		}
 
-		if err := viper.Unmarshal(&appConfig); err != nil {
-			log.Fatalf("Failed to unmarshall configuration: %v", err)
+		// Bind environment variables (fallback to Viper's env)
+		_ = viper.BindEnv("APP_PORT")
+		_ = viper.BindEnv("DB_USER")
+		_ = viper.BindEnv("DB_PASSWORD")
+		_ = viper.BindEnv("DB_NAME")
+		_ = viper.BindEnv("DB_HOST")
+		_ = viper.BindEnv("APP_ENV")
+		_ = viper.BindEnv("DB_PORT")
+
+		// Unmarshal configuration into struct
+		appConfig = &Config{
+			APP_PORT:    viper.GetString("APP_PORT"),
+			DB_USER:     viper.GetString("DB_USER"),
+			DB_PASSWORD: viper.GetString("DB_PASSWORD"),
+			DB_NAME:     viper.GetString("DB_NAME"),
+			DB_HOST:     viper.GetString("DB_HOST"),
+			APP_ENV:     viper.GetString("APP_ENV"),
+			DB_PORT:     viper.GetString("DB_PORT"),
 		}
 	})
 
