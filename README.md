@@ -3,3 +3,4 @@
 
 If you want to use local db, set `APP_ENV` to `development`
 
+Build trigger to migrate up is enabled
