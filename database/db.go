@@ -1,10 +1,14 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/config"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -38,4 +42,28 @@ func LoadDB() {
 
 	DB = db
 	fmt.Println("Database connection established successfully.")
+
+	runMigrations(dsn)
+}
+
+func runMigrations(dsn string) {
+	log.Println("Running database migrations...")
+
+	// Format DSN for golang-migrate
+	migrationDSN := fmt.Sprintf("mysql://%s", dsn)
+
+	// Path to migration files
+	migrationPath := "file://database/migration"
+
+	m, err := migrate.New(migrationPath, migrationDSN)
+	if err != nil {
+		log.Fatalf("Failed to initialize migration: %v", err)
+	}
+
+	// Apply migrations
+	if err := m.Up(); err != nil && errors.Is(err, migrate.ErrNoChange) {
+		log.Fatalf("Failed to apply migrations: %v", err)
+	}
+
+	log.Println("Database migrations applied successfully.")
 }
