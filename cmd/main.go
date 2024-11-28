@@ -7,12 +7,14 @@ import (
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/database"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/middleware"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/routes"
+	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	cfg := config.GetConfig()
 	database.LoadDB()
+	utils.InitGCS()
 
 	server := gin.Default()
 	api := server.Group("/api")
