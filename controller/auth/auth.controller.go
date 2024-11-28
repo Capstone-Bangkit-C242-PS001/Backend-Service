@@ -7,6 +7,7 @@ import (
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/response"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/errorhandler"
 	service "github.com/Capstone-Bangkit-C242-PS001/Backend-Service/service/auth"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,12 +22,13 @@ func NewAuthController(service service.AuthService) *authController {
 func (ac *authController) Register(c *gin.Context) {
 	var registerRequest dto.RegisterRequest
 
-	if err := c.ShouldBindJSON(&registerRequest); err != nil {
+	if err := c.ShouldBind(&registerRequest); err != nil {
 		errorhandler.HandleError(c, &errorhandler.BadRequestError{Message: "Invalid input"})
 		return
 	}
 
-	if err := ac.service.Register(&registerRequest); err != nil {
+	result, err := ac.service.Register(&registerRequest)
+	if err != nil {
 		errorhandler.HandleError(c, err)
 		return
 	}
@@ -34,6 +36,7 @@ func (ac *authController) Register(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Response(response.ResponseParam{
 		StatusCode: http.StatusCreated,
 		Message:    "User registered successfully",
+		Data:       result,
 	}))
 }
 

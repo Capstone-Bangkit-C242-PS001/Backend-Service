@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(user *user.User) error
+	Create(user *user.User) (*user.User, error)
 	FindByEmail(email string) (*user.User, error)
 }
 
@@ -33,6 +33,12 @@ func (ur *userRepository) FindByEmail(email string) (*user.User, error) {
 	return &user, nil
 }
 
-func (ur *userRepository) Create(user *user.User) error {
-	return ur.db.Create(user).Error
+func (ur *userRepository) Create(user *user.User) (*user.User, error) {
+	result := ur.db.Create(user)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return user, nil
 }
