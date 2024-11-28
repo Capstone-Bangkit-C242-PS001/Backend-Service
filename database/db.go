@@ -43,7 +43,9 @@ func LoadDB() {
 	DB = db
 	fmt.Println("Database connection established successfully.")
 
-	runMigrations(dsn)
+	if cfg.APP_ENV == "production" {
+		runMigrations(dsn)
+	}
 }
 
 func runMigrations(dsn string) {
