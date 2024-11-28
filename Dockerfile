@@ -24,6 +24,10 @@ COPY --from=builder /app/cmd/main .
 
 COPY --from=builder /app/.env .
 
+COPY --from=builder /app/database/migration ./database/migration
+
+COPY --from=builder /app/credentials ./credentials
+
 EXPOSE 9000
 
 CMD [ "./main" ]
