@@ -1,4 +1,4 @@
-package userinterest
+package user_interest
 
 import "time"
 

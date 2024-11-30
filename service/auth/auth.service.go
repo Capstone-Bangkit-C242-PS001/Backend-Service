@@ -59,15 +59,14 @@ func (as *authService) Register(req *auth.RegisterRequest) (*auth.RegisterRespon
 		registerUser.ProfilePic = &url
 	}
 
-	result, err := as.repository.Create(&registerUser)
-	if err != nil {
+	if err := as.repository.Create(&registerUser); err != nil {
 		return nil, &errorhandler.InternalServerError{Message: err.Error()}
 	}
 
 	return &auth.RegisterResponse{
-		Name:       result.Name,
-		Email:      result.Email,
-		ProfilePic: *result.ProfilePic,
+		Name:       registerUser.Name,
+		Email:      registerUser.Email,
+		ProfilePic: *registerUser.ProfilePic,
 	}, nil
 }
 
