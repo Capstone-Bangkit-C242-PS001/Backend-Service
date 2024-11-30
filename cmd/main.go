@@ -21,7 +21,8 @@ func main() {
 
 	routes.AuthRouter(api)
 
-	protected := api.Use(middleware.Middleware())
+	protected := api.Group("/")
+	protected.Use(middleware.Middleware())
 
 	protected.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -30,6 +31,7 @@ func main() {
 	})
 
 	routes.UserRoute(protected)
+	routes.LikeRoute(protected)
 	routes.UserInterestRoute(protected)
 	routes.InterestMappingRoutes(protected)
 
