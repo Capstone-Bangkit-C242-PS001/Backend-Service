@@ -9,3 +9,7 @@ type InterestMapping struct {
 	CreatedAt  time.Time `gorm:"autoCreateTime"`
 	UpdatedAt  time.Time `gorm:"autoUpdatedTime"`
 }
+
+func (InterestMapping) TableName() string {
+	return "interest_mapping"
+}
