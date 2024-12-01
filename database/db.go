@@ -61,8 +61,13 @@ func runMigrations(dsn string) {
 	}
 
 	// Apply migrations
-	if err := m.Up(); err != nil && errors.Is(err, migrate.ErrNoChange) {
-		log.Fatalf("Failed to apply migrations: %v", err)
+	if err := m.Up(); err != nil {
+		if errors.Is(err, migrate.ErrNoChange) {
+			log.Println("No new migrations to apply.")
+		} else {
+			log.Fatalf("Failed to apply migrations: %v", err)
+		}
+		return
 	}
 
 	log.Println("Database migrations applied successfully.")
