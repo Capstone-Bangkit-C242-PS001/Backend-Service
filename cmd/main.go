@@ -30,6 +30,7 @@ func main() {
 	})
 
 	routes.UserRoute(protected)
+	routes.UserInterestRoute(protected)
 
 	server.Run(fmt.Sprintf(":%v", cfg.APP_PORT))
 }
