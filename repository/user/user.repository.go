@@ -11,7 +11,7 @@ import (
 type UserRepository interface {
 	Create(user *model.User) error
 	FindByEmail(email string) (*model.User, error)
-	GetByID(id string) (*model.User, error)
+	GetByID(id int) (*model.User, error)
 	Update(user *model.User) error
 }
 
@@ -42,7 +42,7 @@ func (ur *userRepository) Create(user *model.User) error {
 	return result.Error
 }
 
-func (ur *userRepository) GetByID(id string) (*model.User, error) {
+func (ur *userRepository) GetByID(id int) (*model.User, error) {
 	var user model.User
 
 	if err := ur.db.Where("id = ?", id).First(&user).Error; err != nil {

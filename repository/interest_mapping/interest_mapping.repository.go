@@ -8,7 +8,7 @@ import (
 
 type InterestMappingRepository interface {
 	Create(interestMapping *model.InterestMapping) error
-	GetByUserID(id string) ([]model.InterestMapping, error)
+	GetByUserID(id int) ([]model.InterestMapping, error)
 }
 
 type interestMappingRepository struct {
@@ -27,7 +27,7 @@ func (imr *interestMappingRepository) Create(interestMapping *model.InterestMapp
 	return result.Error
 }
 
-func (imr *interestMappingRepository) GetByUserID(id string) ([]model.InterestMapping, error) {
+func (imr *interestMappingRepository) GetByUserID(id int) ([]model.InterestMapping, error) {
 	var interestMapping []model.InterestMapping
 
 	result := imr.db.Where("user_id = ?", id).Find(&interestMapping)

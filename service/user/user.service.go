@@ -11,7 +11,7 @@ import (
 )
 
 type UserService interface {
-	Update(req *dto.UpdateRequest, id string) (*dto.UpdateResponse, error)
+	Update(req *dto.UpdateRequest, id int) (*dto.UpdateResponse, error)
 }
 
 type userService struct {
@@ -24,7 +24,7 @@ func NewUserService(repository repository.UserRepository) *userService {
 	}
 }
 
-func (us *userService) Update(req *dto.UpdateRequest, id string) (*dto.UpdateResponse, error) {
+func (us *userService) Update(req *dto.UpdateRequest, id int) (*dto.UpdateResponse, error) {
 	user, err := us.repository.GetByID(id)
 
 	if err != nil {

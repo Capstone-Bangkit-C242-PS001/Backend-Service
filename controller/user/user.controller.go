@@ -2,6 +2,7 @@ package user
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/response"
 	dto "github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/user"
@@ -28,7 +29,13 @@ func (uc *userController) Update(c *gin.Context) {
 		return
 	}
 
-	result, err := uc.service.Update(&updateRequest, id)
+	idNumber, err := strconv.Atoi(id)
+	if err != nil {
+		errorhandler.HandleError(c, &errorhandler.BadRequestError{Message: "Invalid user ID format"})
+		return
+	}
+
+	result, err := uc.service.Update(&updateRequest, idNumber)
 	if err != nil {
 		errorhandler.HandleError(c, err)
 		return

@@ -2,6 +2,7 @@ package interest_mapping
 
 import (
 	"net/http"
+	"strconv"
 
 	dto "github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/interest_mapping"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/response"
@@ -28,7 +29,12 @@ func (imc *interestMappingController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := imc.service.Create(id, &interestMappingRequest); err != nil {
+	idNumber, err := strconv.Atoi(id)
+	if err != nil {
+		errorhandler.HandleError(c, &errorhandler.BadRequestError{Message: "Invalid user ID format"})
+	}
+
+	if err := imc.service.Create(idNumber, &interestMappingRequest); err != nil {
 		errorhandler.HandleError(c, err)
 		return
 	}
@@ -41,8 +47,12 @@ func (imc *interestMappingController) Create(c *gin.Context) {
 
 func (imc *interestMappingController) GetByUserID(c *gin.Context) {
 	id := c.Param("id")
+	idNumber, err := strconv.Atoi(id)
+	if err != nil {
+		errorhandler.HandleError(c, &errorhandler.BadRequestError{Message: "Invalid user ID format"})
+	}
 
-	result, err := imc.service.GetByUserID(id)
+	result, err := imc.service.GetByUserID(idNumber)
 	if err != nil {
 		errorhandler.HandleError(c, err)
 		return

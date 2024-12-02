@@ -31,7 +31,6 @@ func main() {
 	})
 
 	routes.UserRoute(protected)
-	routes.LikeRoute(protected)
 	routes.UserInterestRoute(protected)
 	routes.InterestMappingRoutes(protected)
 

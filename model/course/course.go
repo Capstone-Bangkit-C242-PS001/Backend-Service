@@ -3,7 +3,7 @@ package course
 import "time"
 
 type Course struct {
-	ID          string    `gorm:"type:char(36);primaryKey;default:(UUID())"`
+	ID          int       `gorm:"primaryKey;autoIncrement"`
 	Title       string    `gorm:"size:255;not null"`
 	Description string    `gorm:"size:255;not null"`
 	Provider    string    `gorm:"size:255;not null"`

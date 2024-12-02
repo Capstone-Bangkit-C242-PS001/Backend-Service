@@ -10,7 +10,7 @@ import (
 var jwtSecret = []byte("mysecretkey")
 
 type JWTClaims struct {
-	ID string `json:"id"`
+	ID int `json:"id"`
 	jwt.RegisteredClaims
 }
 

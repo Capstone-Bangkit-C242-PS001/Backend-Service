@@ -7,6 +7,6 @@ type InterestMappingRequest struct {
 }
 
 type InterestMappingResponse struct {
-	UserID    string                     `json:"user_id"`
+	UserID    int                        `json:"user_id"`
 	Interests []dto.UserInterestResponse `json:"interests"`
 }

@@ -11,8 +11,8 @@ import (
 )
 
 type InterestMappingService interface {
-	Create(userID string, req *dto.InterestMappingRequest) error
-	GetByUserID(userID string) (*dto.InterestMappingResponse, error)
+	Create(userID int, req *dto.InterestMappingRequest) error
+	GetByUserID(userID int) (*dto.InterestMappingResponse, error)
 }
 
 type interestMappingService struct {
@@ -33,7 +33,7 @@ func NewInterestMappingService(
 	}
 }
 
-func (ims *interestMappingService) Create(userID string, req *dto.InterestMappingRequest) error {
+func (ims *interestMappingService) Create(userID int, req *dto.InterestMappingRequest) error {
 	user, err := ims.userRepository.GetByID(userID)
 	if err != nil {
 		return &errorhandler.NotFoundError{Message: err.Error()}
@@ -63,7 +63,7 @@ func (ims *interestMappingService) Create(userID string, req *dto.InterestMappin
 	return nil
 }
 
-func (ims *interestMappingService) GetByUserID(userID string) (*dto.InterestMappingResponse, error) {
+func (ims *interestMappingService) GetByUserID(userID int) (*dto.InterestMappingResponse, error) {
 	mappings, err := ims.repository.GetByUserID(userID)
 	if err != nil {
 		return nil, err
