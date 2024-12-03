@@ -35,14 +35,10 @@ func (ps *predictionService) Predict(userID int, req dto.PredictRequest) (*[]dto
 		return nil, fmt.Errorf("failed to predict: %w", err)
 	}
 
-	fmt.Println(predictedCourseIDs)
-
 	courses, err := ps.courseRepository.GetByIds(*predictedCourseIDs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get courses: %w", err)
 	}
-
-	fmt.Println(courses)
 
 	var response []dto.PredictResponse
 	for _, c := range *courses {
