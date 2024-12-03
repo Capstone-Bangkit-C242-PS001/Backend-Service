@@ -11,6 +11,8 @@ import (
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/routes"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/utils"
 	"github.com/gin-gonic/gin"
+
+	_ "github.com/Capstone-Bangkit-C242-PS001/Backend-Service/docs"
 )
 
 func main() {
