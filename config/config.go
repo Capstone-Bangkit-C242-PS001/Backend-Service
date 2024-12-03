@@ -18,6 +18,7 @@ type Config struct {
 	DB_PORT                        string
 	GOOGLE_APPLICATION_CREDENTIALS string
 	GCS_BUCKET_NAME                string
+	ML_SERVICE_BASE_URL            string
 }
 
 var (
@@ -49,6 +50,7 @@ func GetConfig() *Config {
 		_ = viper.BindEnv("DB_PORT")
 		_ = viper.BindEnv("GOOGLE_APPLICATION_CREDENTIALS")
 		_ = viper.BindEnv("GCS_BUCKET_NAME")
+		_ = viper.BindEnv("ML_SERVICE_BASE_URL")
 
 		// Unmarshal configuration into struct
 		appConfig = &Config{
@@ -61,6 +63,7 @@ func GetConfig() *Config {
 			DB_PORT:                        viper.GetString("DB_PORT"),
 			GOOGLE_APPLICATION_CREDENTIALS: viper.GetString("GOOGLE_APPLICATION_CREDENTIALS"),
 			GCS_BUCKET_NAME:                viper.GetString("GCS_BUCKET_NAME"),
+			ML_SERVICE_BASE_URL:            viper.GetString("ML_SERVICE_BASE_URL"),
 		}
 
 		// Set default port if not provided
