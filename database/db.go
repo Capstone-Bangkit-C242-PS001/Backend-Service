@@ -63,7 +63,7 @@ func runMigrations(dsn string) {
 	}
 
 	// Apply migrations
-	if err := m.Up(); err != nil && errors.Is(err, migrate.ErrNoChange) {
+	if err := m.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
 		log.Fatalf("Failed to apply migrations: %v", err)
 	}
 
