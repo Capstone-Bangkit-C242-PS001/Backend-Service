@@ -5,9 +5,9 @@ type PredictRequest struct {
 }
 
 type PredictResponse struct {
-	ID          int    `gorm:"primaryKey;autoIncrement"`
-	Title       string `gorm:"size:255;not null"`
-	Description string `gorm:"size:255;not null"`
-	Provider    string `gorm:"size:255;not null"`
-	ProviderURL string `gorm:"size:255;not null"`
+	ID          int    `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Provider    string `json:"provider"`
+	ProviderURL string `json:"provider_url"`
 }
