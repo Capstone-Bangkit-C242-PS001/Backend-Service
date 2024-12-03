@@ -63,6 +63,11 @@ func (as *authService) Register(req *auth.RegisterRequest) (*auth.RegisterRespon
 		return nil, &errorhandler.InternalServerError{Message: err.Error()}
 	}
 
+	emptyString := ""
+	if registerUser.ProfilePic == nil {
+		registerUser.ProfilePic = &emptyString
+	}
+
 	return &auth.RegisterResponse{
 		Name:       registerUser.Name,
 		Email:      registerUser.Email,
