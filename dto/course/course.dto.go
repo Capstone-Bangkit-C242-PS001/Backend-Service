@@ -10,7 +10,7 @@ type CreateRequest struct {
 	Description string                `form:"description" binding:"required"`
 	Provider    string                `form:"provider" binding:"required"`
 	ProviderURL string                `form:"provider_url" binding:"required"`
-	CoursePic   *multipart.FileHeader `form:"course_pic" binding:"required"`
+	CoursePic   *multipart.FileHeader `form:"course_pic"`
 }
 
 type CourseResponse struct {
