@@ -33,6 +33,8 @@ func main() {
 	routes.UserRoute(protected)
 	routes.UserInterestRoute(protected)
 	routes.InterestMappingRoutes(protected)
+	routes.CourseRoutes(protected)
+	routes.RatingRoutes(protected)
 
 	server.Run(fmt.Sprintf(":%v", cfg.APP_PORT))
 }
