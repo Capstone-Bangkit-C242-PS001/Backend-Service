@@ -35,6 +35,7 @@ func main() {
 	routes.InterestMappingRoutes(protected)
 	routes.CourseRoutes(protected)
 	routes.RatingRoutes(protected)
+	routes.PredictionRoutes(protected.Group("/predict"))
 
 	server.Run(fmt.Sprintf(":%v", cfg.APP_PORT))
 }
