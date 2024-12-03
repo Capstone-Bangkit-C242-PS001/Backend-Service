@@ -1,7 +1,7 @@
 CREATE TABLE courses (
     id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     title VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
     course_pic VARCHAR(255),
     provider VARCHAR(255) NOT NULL,
     provider_url VARCHAR(255) NOT NULL,
