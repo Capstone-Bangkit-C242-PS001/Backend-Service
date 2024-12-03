@@ -11,6 +11,7 @@ import (
 type CourseRepository interface {
 	Create(course *model.Course) error
 	GetByID(id int) (*model.Course, error)
+	GetByIds(ids []int) (*[]model.Course, error)
 	GetAll() ([]model.Course, error)
 }
 
@@ -40,6 +41,16 @@ func (cr *courseRepository) GetByID(id int) (*model.Course, error) {
 	}
 
 	return &course, nil
+}
+
+func (cr *courseRepository) GetByIds(ids []int) (*[]model.Course, error) {
+	var courses []model.Course
+	result := cr.db.Where("id IN ?", ids).Find(&courses)
+	if err := result.Error; err != nil {
+		return nil, err
+	}
+
+	return &courses, nil
 }
 
 func (cr *courseRepository) GetAll() ([]model.Course, error) {
