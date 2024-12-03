@@ -1,0 +1,1 @@
+ALTER TABLE courses MODIFY COLUMN description VARCHAR(255) NOT NULL;
