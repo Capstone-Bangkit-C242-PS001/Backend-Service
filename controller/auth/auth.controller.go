@@ -19,6 +19,19 @@ func NewAuthController(service service.AuthService) *authController {
 	return &authController{service: service}
 }
 
+// @Summary Register a new user
+// @Description Allows a user to register with their name, email, password, and optional profile picture
+// @Tags Authentication
+// @Accept multipart/form-data
+// @Produce json
+// @Param name formData string true "Name of the user"
+// @Param email formData string true "Email of the user"
+// @Param password formData string true "Password for the account"
+// @Param profile_pic formData file false "Optional profile picture file"
+// @Success 201 {object} RegisterResponse
+// @Failure 400 "Invalid input"
+// @Failure 500 "Internal server error"
+// @Router /auth/register [post]
 func (ac *authController) Register(c *gin.Context) {
 	var registerRequest dto.RegisterRequest
 
@@ -40,6 +53,17 @@ func (ac *authController) Register(c *gin.Context) {
 	}))
 }
 
+// @Summary Login a user
+// @Description Allows a user to log in by providing their email and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param loginRequest body LoginRequest true "Login request payload"
+// @Success 200 {object} LoginResponse
+// @Failure 400 "Invalid input"
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /auth/login [post]
 func (ac *authController) Login(c *gin.Context) {
 	var loginRequest dto.LoginRequest
 

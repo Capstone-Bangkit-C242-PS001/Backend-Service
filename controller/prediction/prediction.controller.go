@@ -19,6 +19,18 @@ func NewPredictionController(service service.PredictionService) *predictionContr
 	}
 }
 
+// @Summary Predict courses
+// @Description Predicts a list of recommended courses based on the user's skillsets
+// @Tags Prediction
+// @Accept json
+// @Produce json
+// @Param userID header int true "User ID from JWT token"
+// @Param predictRequest body PredictRequest true "Prediction request payload"
+// @Success 200 {array} PredictResponse "List of recommended courses"
+// @Failure 400 "Invalid input"
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /predictions [post]
 func (pc *predictionController) Predict(c *gin.Context) {
 	var courseRequest dto.PredictRequest
 	if err := c.ShouldBind(&courseRequest); err != nil {

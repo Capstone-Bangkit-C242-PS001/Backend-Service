@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/config"
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/database"
@@ -17,6 +19,7 @@ func main() {
 	utils.InitGCS()
 
 	server := gin.Default()
+	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	api := server.Group("/api")
 
 	routes.AuthRouter(api)

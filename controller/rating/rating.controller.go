@@ -21,6 +21,18 @@ func NewRatingController(service service.RatingService) *ratingController {
 	}
 }
 
+// @Summary Add a new rating
+// @Description Allows a user to add a rating for a specific course
+// @Tags Ratings
+// @Accept json
+// @Produce json
+// @Param userID header int true "User ID from JWT token"
+// @Param ratingRequest body CreateRatingRequest true "Rating request payload"
+// @Success 200 "Rating added successfully"
+// @Failure 400 "Invalid input"
+// @Failure 401 "Unauthorized"
+// @Failure 500 "Internal server error"
+// @Router /ratings [post]
 func (rc *ratingController) Create(c *gin.Context) {
 	var ratingRequest dto.CreateRatingRequest
 	if err := c.ShouldBind(&ratingRequest); err != nil {

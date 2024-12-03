@@ -1,0 +1,197 @@
+definitions:
+  auth.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.LoginResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      token:
+        type: string
+    type: object
+  auth.RegisterResponse:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      profile_pic:
+        type: string
+    type: object
+  prediction.PredictRequest:
+    properties:
+      skillsets:
+        items:
+          type: string
+        type: array
+    type: object
+  prediction.PredictResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      provider:
+        type: string
+      provider_url:
+        type: string
+      title:
+        type: string
+    type: object
+  rating.CreateRatingRequest:
+    properties:
+      course_id:
+        type: integer
+      rating:
+        type: integer
+    required:
+    - course_id
+    - rating
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to log in by providing their email and password
+      parameters:
+      - description: Login request payload
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      summary: Login a user
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Allows a user to register with their name, email, password, and
+        optional profile picture
+      parameters:
+      - description: Name of the user
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Email of the user
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Password for the account
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: Optional profile picture file
+        in: formData
+        name: profile_pic
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auth.RegisterResponse'
+        "400":
+          description: Invalid input
+        "500":
+          description: Internal server error
+      summary: Register a new user
+      tags:
+      - Authentication
+  /predictions:
+    post:
+      consumes:
+      - application/json
+      description: Predicts a list of recommended courses based on the user's skillsets
+      parameters:
+      - description: User ID from JWT token
+        in: header
+        name: userID
+        required: true
+        type: integer
+      - description: Prediction request payload
+        in: body
+        name: predictRequest
+        required: true
+        schema:
+          $ref: '#/definitions/prediction.PredictRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of recommended courses
+          schema:
+            items:
+              $ref: '#/definitions/prediction.PredictResponse'
+            type: array
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      summary: Predict courses
+      tags:
+      - Prediction
+  /ratings:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to add a rating for a specific course
+      parameters:
+      - description: User ID from JWT token
+        in: header
+        name: userID
+        required: true
+        type: integer
+      - description: Rating request payload
+        in: body
+        name: ratingRequest
+        required: true
+        schema:
+          $ref: '#/definitions/rating.CreateRatingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Rating added successfully
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      summary: Add a new rating
+      tags:
+      - Ratings
+swagger: "2.0"

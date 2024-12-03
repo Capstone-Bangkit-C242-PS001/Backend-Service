@@ -62,4 +62,5 @@ else
 	migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" force $(version)
 endif
 
-	
+swag:
+	swag init --generalInfo cmd/main.go --output docs
