@@ -28,7 +28,9 @@ func (rc *ratingController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := rc.service.Create(&ratingRequest); err != nil {
+	userID := c.Value("userID").(int)
+
+	if err := rc.service.Create(userID, &ratingRequest); err != nil {
 		errorhandler.HandleError(c, err)
 		return
 	}

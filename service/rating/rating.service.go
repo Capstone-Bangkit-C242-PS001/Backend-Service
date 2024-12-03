@@ -11,7 +11,7 @@ import (
 )
 
 type RatingService interface {
-	Create(req *dto.CreateRatingRequest) error
+	Create(userID int, req *dto.CreateRatingRequest) error
 	GetByUserID(id int) (*dto.RatingResponse, error)
 	GetRating(user_id, course_id int) (*dto.RatingDefaultResponse, error)
 }
@@ -34,19 +34,14 @@ func NewRatingService(
 	}
 }
 
-func (rs *ratingService) Create(req *dto.CreateRatingRequest) error {
-	user, err := rs.userRepository.GetByID(req.UserID)
-	if err != nil {
-		return err
-	}
-
+func (rs *ratingService) Create(userID int, req *dto.CreateRatingRequest) error {
 	course, err := rs.courseRepository.GetByID(req.CourseID)
 	if err != nil {
 		return err
 	}
 
 	rating := model.Rating{
-		UserID:   user.ID,
+		UserID:   userID,
 		CourseID: course.ID,
 		Rating:   req.Rating,
 	}
