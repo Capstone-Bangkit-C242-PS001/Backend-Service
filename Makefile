@@ -44,3 +44,22 @@ migration-up:
 migration-down:
 	@echo "Running migrations down..."
 	migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" down 1
+
+migration-force:
+ifeq ($(OS),Windows_NT)
+	@if "$(version)" == "" ( \
+		echo "Error: version parameter is required. Usage: make migration-force version=<migration_version>" && exit 1 \
+	) else ( \
+		echo "Force migrations to $(version)" && \
+		migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" force $(version) \
+	)
+else
+	@if [ -z "$(version)" ]; then \
+		echo "Error: version parameter is required. Usage: make migration-force version=<migration_version>"; \
+		exit 1; \
+	fi; \
+	echo "Force migrations to $(version)"; \
+	migrate -path database/migration -database "mysql://$(DB_USER):$(DB_PASSWORD)@tcp(localhost:$(DB_PORT))/$(DB_NAME)" force $(version)
+endif
+
+	

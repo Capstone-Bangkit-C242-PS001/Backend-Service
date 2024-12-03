@@ -43,7 +43,9 @@ func LoadDB() {
 	DB = db
 	fmt.Println("Database connection established successfully.")
 
-	runMigrations(dsn)
+	if cfg.APP_ENV == "production" {
+		runMigrations(dsn)
+	}
 }
 
 func runMigrations(dsn string) {
@@ -61,13 +63,8 @@ func runMigrations(dsn string) {
 	}
 
 	// Apply migrations
-	if err := m.Up(); err != nil {
-		if errors.Is(err, migrate.ErrNoChange) {
-			log.Println("No new migrations to apply.")
-		} else {
-			log.Fatalf("Failed to apply migrations: %v", err)
-		}
-		return
+	if err := m.Up(); err != nil && errors.Is(err, migrate.ErrNoChange) {
+		log.Fatalf("Failed to apply migrations: %v", err)
 	}
 
 	log.Println("Database migrations applied successfully.")

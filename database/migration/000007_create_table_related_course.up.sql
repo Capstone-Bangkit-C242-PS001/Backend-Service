@@ -1,0 +1,9 @@
+CREATE TABLE related_course (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    course_id VARCHAR(255) NOT NULL,
+    related_course_id VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+    FOREIGN KEY (related_course_id) REFERENCES relation_type(id) ON DELETE CASCADE
+)
