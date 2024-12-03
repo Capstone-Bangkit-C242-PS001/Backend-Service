@@ -70,11 +70,15 @@ func (c *mlService) Predict(body dto.PredictRequest) (*dto.PredictResponse, erro
 		return nil, fmt.Errorf("error reading response body: %w", err)
 	}
 
+	fmt.Println(string(responseBody))
+
 	// Unmarshal response into PredictResponse
 	var predictResponse dto.PredictResponse
 	if err := json.Unmarshal(responseBody, &predictResponse); err != nil {
 		return nil, fmt.Errorf("error unmarshalling response: %w", err)
 	}
+
+	fmt.Println(predictResponse)
 
 	return &predictResponse, nil
 }
