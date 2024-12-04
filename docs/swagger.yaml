@@ -60,7 +60,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /auth/login:
+  /api/login:
     post:
       consumes:
       - application/json
@@ -88,7 +88,73 @@ paths:
       summary: Login a user
       tags:
       - Authentication
-  /auth/register:
+  /api/predict:
+    post:
+      consumes:
+      - application/json
+      description: Predicts a list of recommended courses based on the user's skillsets
+      parameters:
+      - description: User ID from JWT token
+        in: header
+        name: userID
+        required: true
+        type: integer
+      - description: Prediction request payload
+        in: body
+        name: predictRequest
+        required: true
+        schema:
+          $ref: '#/definitions/prediction.PredictRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of recommended courses
+          schema:
+            items:
+              $ref: '#/definitions/prediction.PredictResponse'
+            type: array
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      summary: Predict courses
+      tags:
+      - Prediction
+  /api/rating:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to add a rating for a specific course
+      parameters:
+      - description: User ID from JWT token
+        in: header
+        name: userID
+        required: true
+        type: integer
+      - description: Rating request payload
+        in: body
+        name: ratingRequest
+        required: true
+        schema:
+          $ref: '#/definitions/rating.CreateRatingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Rating added successfully
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      summary: Add a new rating
+      tags:
+      - Ratings
+  /api/register:
     post:
       consumes:
       - multipart/form-data
@@ -128,70 +194,4 @@ paths:
       summary: Register a new user
       tags:
       - Authentication
-  /predictions:
-    post:
-      consumes:
-      - application/json
-      description: Predicts a list of recommended courses based on the user's skillsets
-      parameters:
-      - description: User ID from JWT token
-        in: header
-        name: userID
-        required: true
-        type: integer
-      - description: Prediction request payload
-        in: body
-        name: predictRequest
-        required: true
-        schema:
-          $ref: '#/definitions/prediction.PredictRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of recommended courses
-          schema:
-            items:
-              $ref: '#/definitions/prediction.PredictResponse'
-            type: array
-        "400":
-          description: Invalid input
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-      summary: Predict courses
-      tags:
-      - Prediction
-  /ratings:
-    post:
-      consumes:
-      - application/json
-      description: Allows a user to add a rating for a specific course
-      parameters:
-      - description: User ID from JWT token
-        in: header
-        name: userID
-        required: true
-        type: integer
-      - description: Rating request payload
-        in: body
-        name: ratingRequest
-        required: true
-        schema:
-          $ref: '#/definitions/rating.CreateRatingRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Rating added successfully
-        "400":
-          description: Invalid input
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-      summary: Add a new rating
-      tags:
-      - Ratings
 swagger: "2.0"
