@@ -30,7 +30,7 @@ func NewPredictionController(service service.PredictionService) *predictionContr
 // @Failure 400 "Invalid input"
 // @Failure 401 "Unauthorized"
 // @Failure 500 "Internal server error"
-// @Router /predictions [post]
+// @Router /api/predict [post]
 func (pc *predictionController) Predict(c *gin.Context) {
 	var courseRequest dto.PredictRequest
 	if err := c.ShouldBind(&courseRequest); err != nil {

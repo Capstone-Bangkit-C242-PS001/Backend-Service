@@ -31,7 +31,7 @@ func NewAuthController(service service.AuthService) *authController {
 // @Success 201 {object} RegisterResponse
 // @Failure 400 "Invalid input"
 // @Failure 500 "Internal server error"
-// @Router /auth/register [post]
+// @Router /api/register [post]
 func (ac *authController) Register(c *gin.Context) {
 	var registerRequest dto.RegisterRequest
 
@@ -63,7 +63,7 @@ func (ac *authController) Register(c *gin.Context) {
 // @Failure 400 "Invalid input"
 // @Failure 401 "Unauthorized"
 // @Failure 500 "Internal server error"
-// @Router /auth/login [post]
+// @Router /api/login [post]
 func (ac *authController) Login(c *gin.Context) {
 	var loginRequest dto.LoginRequest
 

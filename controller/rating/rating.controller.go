@@ -32,7 +32,7 @@ func NewRatingController(service service.RatingService) *ratingController {
 // @Failure 400 "Invalid input"
 // @Failure 401 "Unauthorized"
 // @Failure 500 "Internal server error"
-// @Router /ratings [post]
+// @Router /api/rating [post]
 func (rc *ratingController) Create(c *gin.Context) {
 	var ratingRequest dto.CreateRatingRequest
 	if err := c.ShouldBind(&ratingRequest); err != nil {
