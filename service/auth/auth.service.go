@@ -1,6 +1,9 @@
 package auth
 
 import (
+	"errors"
+	"fmt"
+	"gorm.io/gorm"
 	"path/filepath"
 
 	"github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/auth"
@@ -28,7 +31,9 @@ func (as *authService) Register(req *auth.RegisterRequest) (*auth.RegisterRespon
 	user, err := as.repository.FindByEmail(req.Email)
 
 	if err != nil {
-		return nil, err
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("failed to find by email: %w", err)
+		}
 	}
 
 	if user != nil {
@@ -75,10 +80,15 @@ func (as *authService) Register(req *auth.RegisterRequest) (*auth.RegisterRespon
 	}, nil
 }
 
+var UserNotFoundError = errors.New("user not found")
+
 func (as *authService) Login(req *auth.LoginRequest) (*auth.LoginResponse, error) {
 	user, err := as.repository.FindByEmail(req.Email)
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, UserNotFoundError
+		}
 		return nil, err
 	}
 

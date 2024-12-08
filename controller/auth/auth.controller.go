@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"net/http"
 
 	dto "github.com/Capstone-Bangkit-C242-PS001/Backend-Service/dto/auth"
@@ -74,6 +75,11 @@ func (ac *authController) Login(c *gin.Context) {
 
 	resp, err := ac.service.Login(&loginRequest)
 	if err != nil {
+		if errors.Is(err, service.UserNotFoundError) {
+			errorhandler.HandleError(c, &errorhandler.NotFoundError{Message: err.Error()})
+			return
+		}
+
 		errorhandler.HandleError(c, err)
 		return
 	}
