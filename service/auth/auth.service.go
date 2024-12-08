@@ -28,7 +28,7 @@ func (as *authService) Register(req *auth.RegisterRequest) (*auth.RegisterRespon
 	user, err := as.repository.FindByEmail(req.Email)
 
 	if err != nil {
-		return nil, &errorhandler.InternalServerError{Message: err.Error()}
+		return nil, err
 	}
 
 	if user != nil {
@@ -79,7 +79,7 @@ func (as *authService) Login(req *auth.LoginRequest) (*auth.LoginResponse, error
 	user, err := as.repository.FindByEmail(req.Email)
 
 	if err != nil {
-		return nil, &errorhandler.NotFoundError{Message: "Invalid email or password"}
+		return nil, err
 	}
 
 	if !utils.VerifyPassword(user.Password, req.Password) {
